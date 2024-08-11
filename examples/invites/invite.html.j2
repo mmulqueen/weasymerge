@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Invite</title>
+        <style>
+            @page {
+                size: A5;
+                margin: 1.5cm;
+
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: sans-serif;
+                font-size: 16pt;
+                line-height: 200%;
+                margin: 0;
+                padding: 0;
+                display: table;
+                height: 100%;
+                position: absolute;
+                left: 0; right: 0; top: 0; bottom: 0;
+            }
+            .xy-centre {
+                text-align: center;
+                width: 100%;
+                height: 100%;
+                display: table-cell;
+                vertical-align: middle;
+                border: 1px solid black;
+                padding: 1cm;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="xy-centre">
+            <div style="vertical-align: top;">
+                Dear {{ row['Name'] }},<br/><br/>
+
+                We would like to invite you to our exhibition in {{ row['Location'] }}.
+
+                For more information, please visit our website. We are looking forward to seeing you there.<br/><br/>
+
+                Please RSVP by 01/09/2024.<br/><br/>
+            </div>
+        </div>
+    </body>
+</html>
