@@ -1,4 +1,6 @@
+from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import pytest
 from conftest import run_weasymerge
@@ -6,7 +8,7 @@ from conftest import run_weasymerge
 EXAMPLES_DIR = Path(__file__).parent.parent / "examples"
 
 
-def _discover_csv_examples():
+def _discover_csv_examples() -> Iterator[Any]:
     if not EXAMPLES_DIR.is_dir():
         return
     for example in sorted(EXAMPLES_DIR.iterdir()):
@@ -19,7 +21,9 @@ def _discover_csv_examples():
 
 
 @pytest.mark.parametrize(("example", "csv", "template"), list(_discover_csv_examples()))
-def test_example_runs_end_to_end(example, csv, template, tmp_path):
+def test_example_runs_end_to_end(
+    example: Path, csv: Path, template: Path, tmp_path: Path
+) -> None:
     out_pattern = str(tmp_path / "{row_number}.pdf")
     result = run_weasymerge(
         ["--data", str(csv), "--template", str(template), "--output", out_pattern]

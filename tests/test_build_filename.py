@@ -18,10 +18,12 @@ from weasymerge import build_filename
         ("out/{row[Name]}.pdf", {"Name": "Renée"}, 1, "out/Renee.pdf"),
     ],
 )
-def test_build_filename(template, row, row_number, expected):
+def test_build_filename(
+    template: str, row: dict[str, str], row_number: int, expected: str
+) -> None:
     assert build_filename(template, row, row_number) == expected
 
 
-def test_missing_field_raises():
+def test_missing_field_raises() -> None:
     with pytest.raises(KeyError):
         build_filename("out/{row[Missing]}.pdf", {"Name": "Alice"}, 1)

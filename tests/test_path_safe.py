@@ -14,7 +14,7 @@ from weasymerge import path_safe
         " leading",
     ],
 )
-def test_allowed_characters_pass_through(value):
+def test_allowed_characters_pass_through(value: str) -> None:
     assert path_safe(value) == value
 
 
@@ -31,7 +31,7 @@ def test_allowed_characters_pass_through(value):
         ("a;b,c", "abc"),
     ],
 )
-def test_disallowed_characters_stripped(value, expected):
+def test_disallowed_characters_stripped(value: str, expected: str) -> None:
     assert path_safe(value) == expected
 
 
@@ -45,7 +45,7 @@ def test_disallowed_characters_stripped(value, expected):
         ("ÀÉÎÕÜ", "AEIOU"),
     ],
 )
-def test_unicode_normalised_to_ascii(value, expected):
+def test_unicode_normalised_to_ascii(value: str, expected: str) -> None:
     assert path_safe(value) == expected
 
 
@@ -57,13 +57,13 @@ def test_unicode_normalised_to_ascii(value, expected):
         "→",
     ],
 )
-def test_non_normalisable_dropped(value):
+def test_non_normalisable_dropped(value: str) -> None:
     assert path_safe(value) == ""
 
 
-def test_empty_string():
+def test_empty_string() -> None:
     assert path_safe("") == ""
 
 
-def test_path_traversal_neutralised():
+def test_path_traversal_neutralised() -> None:
     assert path_safe("../etc/passwd") == "..etcpasswd"

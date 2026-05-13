@@ -10,39 +10,33 @@ from jinja2 import Environment, FileSystemLoader, Template
 from weasyprint import HTML
 
 
-def load_data(data_file: TextIO):
+def load_data(data_file: TextIO) -> DictReader[str]:
     return DictReader(data_file)
 
 
-def load_template(template_path):
+def load_template(template_path: str) -> Template:
     dir_path = os.path.dirname(template_path)
     env = Environment(loader=FileSystemLoader(dir_path), autoescape=True)
     return env.get_template(os.path.basename(template_path))
 
 
-def merge(template: Template, row: dict[str, str], row_number: int):
-    """
-    Renders the template and outputs the resulting HTML.
-    :param template: Jinja2 template
-    :param row: Row data
-    :param row_number: Row number, 1st data row is 1.
-    :return: HTML string
-    """
+def merge(template: Template, row: dict[str, str], row_number: int) -> str:
+    """Render the template with the row data; row_number is 1-indexed."""
     return template.render(row=row, row_number=row_number)
 
 
-def generate_pdf(html: str, output_path: str):
+def generate_pdf(html: str, output_path: str) -> None:
     HTML(string=html).write_pdf(output_path)
 
 
 PATH_SAFE_CHARS = set(string.ascii_letters + string.digits + " -_.")
 
 
-def path_safe(value: str):
-    # Normalise to nearest ASCII characters
-    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore")
-    # Only allow safe characters
-    return "".join(c for c in value.decode() if c in PATH_SAFE_CHARS)
+def path_safe(value: str) -> str:
+    ascii_value = (
+        unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
+    )
+    return "".join(c for c in ascii_value if c in PATH_SAFE_CHARS)
 
 
 def build_filename(
@@ -52,7 +46,7 @@ def build_filename(
     return output_path_template.format(row=safe_row, row_number=row_number)
 
 
-def main():
+def main() -> None:
     parser = ArgumentParser(description="WeasyMerge")
     parser.add_argument(
         "--data", help="The data file (CSV)", type=FileType("r"), default=sys.stdin

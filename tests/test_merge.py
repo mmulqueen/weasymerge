@@ -18,6 +18,8 @@ from weasymerge import merge
     ],
     ids=["attribute-access", "subscript-access", "row-number"],
 )
-def test_merge_exposes_row_and_row_number(source, row, row_number, expected):
+def test_merge_exposes_row_and_row_number(
+    source: str, row: dict[str, str], row_number: int, expected: str
+) -> None:
     template = Environment(autoescape=False).from_string(source)
     assert merge(template, row, row_number) == expected

@@ -31,5 +31,5 @@ from weasymerge import load_data
         "quoted-commas",
     ],
 )
-def test_load_data(csv_text, expected):
+def test_load_data(csv_text: str, expected: list[dict[str, str]]) -> None:
     assert list(load_data(StringIO(csv_text))) == expected

@@ -1,7 +1,9 @@
+from pathlib import Path
+
 from weasymerge import load_template
 
 
-def test_renders_basic_template(tmp_path):
+def test_renders_basic_template(tmp_path: Path) -> None:
     tpl = tmp_path / "hello.html.j2"
     tpl.write_text("Hello {{ row.Name }}")
 
@@ -9,7 +11,7 @@ def test_renders_basic_template(tmp_path):
     assert template.render(row={"Name": "Alice"}) == "Hello Alice"
 
 
-def test_autoescape_is_on(tmp_path):
+def test_autoescape_is_on(tmp_path: Path) -> None:
     tpl = tmp_path / "hello.html.j2"
     tpl.write_text("{{ row.Name }}")
 
@@ -19,7 +21,7 @@ def test_autoescape_is_on(tmp_path):
     assert "&lt;script&gt;" in rendered
 
 
-def test_autoescape_applies_regardless_of_extension(tmp_path):
+def test_autoescape_applies_regardless_of_extension(tmp_path: Path) -> None:
     # load_template hard-codes autoescape=True, so even a .txt template escapes.
     tpl = tmp_path / "note.txt"
     tpl.write_text("{{ row.Name }}")
@@ -28,7 +30,7 @@ def test_autoescape_applies_regardless_of_extension(tmp_path):
     assert template.render(row={"Name": "<b>x</b>"}) == "&lt;b&gt;x&lt;/b&gt;"
 
 
-def test_include_resolves_relative_to_template_dir(tmp_path):
+def test_include_resolves_relative_to_template_dir(tmp_path: Path) -> None:
     (tmp_path / "partial.html.j2").write_text("<p>partial: {{ row.Name }}</p>")
     main = tmp_path / "main.html.j2"
     main.write_text('{% include "partial.html.j2" %}')
