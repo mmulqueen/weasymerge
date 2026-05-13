@@ -25,7 +25,14 @@ only-include = ["src/weasymerge.py"]
 dev = [
     "pytest>=8",
     "pypdf>=4",
+    "ruff>=0.7",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

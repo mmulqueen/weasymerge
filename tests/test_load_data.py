@@ -23,7 +23,13 @@ from weasymerge import load_data
             [{"Name": "Alice", "Note": "hello, world"}],
         ),
     ],
-    ids=["multiple-rows", "header-only", "empty", "whitespace-preserved", "quoted-commas"],
+    ids=[
+        "multiple-rows",
+        "header-only",
+        "empty",
+        "whitespace-preserved",
+        "quoted-commas",
+    ],
 )
 def test_load_data(csv_text, expected):
     assert list(load_data(StringIO(csv_text))) == expected

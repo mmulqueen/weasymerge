@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pytest
-
 from conftest import run_weasymerge
 
 EXAMPLES_DIR = Path(__file__).parent.parent / "examples"

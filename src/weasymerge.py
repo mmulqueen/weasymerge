@@ -1,12 +1,12 @@
 import os
 import string
 import sys
+import unicodedata
 from argparse import ArgumentParser, FileType
 from csv import DictReader
 from typing import TextIO
 
-import unicodedata
-from jinja2 import Template, Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, Template
 from weasyprint import HTML
 
 
@@ -40,21 +40,34 @@ PATH_SAFE_CHARS = set(string.ascii_letters + string.digits + " -_.")
 
 def path_safe(value: str):
     # Normalise to nearest ASCII characters
-    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore")
     # Only allow safe characters
     return "".join(c for c in value.decode() if c in PATH_SAFE_CHARS)
 
 
-def build_filename(output_path_template: str, row: dict[str, str], row_number: int) -> str:
+def build_filename(
+    output_path_template: str, row: dict[str, str], row_number: int
+) -> str:
     safe_row = {k: path_safe(v) for k, v in row.items()}
     return output_path_template.format(row=safe_row, row_number=row_number)
 
 
 def main():
     parser = ArgumentParser(description="WeasyMerge")
-    parser.add_argument("--data", help="The data file (CSV)", type=FileType("r"), default=sys.stdin)
-    parser.add_argument("--template", help="The template file (HTML/CSS/Jinja2)", type=str, required=True)
-    parser.add_argument("--output", help="The output file (PDF), with optional placeholders", required=True)
+    parser.add_argument(
+        "--data", help="The data file (CSV)", type=FileType("r"), default=sys.stdin
+    )
+    parser.add_argument(
+        "--template",
+        help="The template file (HTML/CSS/Jinja2)",
+        type=str,
+        required=True,
+    )
+    parser.add_argument(
+        "--output",
+        help="The output file (PDF), with optional placeholders",
+        required=True,
+    )
     args = parser.parse_args()
 
     data = load_data(args.data)
