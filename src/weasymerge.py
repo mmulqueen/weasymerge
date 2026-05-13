@@ -53,8 +53,8 @@ def build_filename(output_path_template: str, row: dict[str, str], row_number: i
 def main():
     parser = ArgumentParser(description="WeasyMerge")
     parser.add_argument("--data", help="The data file (CSV)", type=FileType("r"), default=sys.stdin)
-    parser.add_argument("--template", help="The template file (HTML/CSS/Jinja2)", type=str)
-    parser.add_argument("--output", help="The output file (PDF), with optional placeholders")
+    parser.add_argument("--template", help="The template file (HTML/CSS/Jinja2)", type=str, required=True)
+    parser.add_argument("--output", help="The output file (PDF), with optional placeholders", required=True)
     args = parser.parse_args()
 
     data = load_data(args.data)

@@ -1,1 +1,5 @@
 /examples/invites/pdfs/
+.venv/
+__pycache__/
+*.egg-info/
+dist/

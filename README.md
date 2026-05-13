@@ -6,7 +6,7 @@ using HTML and CSS with [Jinja2](https://jinja.palletsprojects.com/) templating.
 ## Usage
 
 ```bash
-weasymerge.py --data guests.csv --template invite.html.j2 --output "pdfs/Invite {row_number} {row[Name]}.pdf"
+weasymerge --data guests.csv --template invite.html.j2 --output "pdfs/Invite {row_number} {row[Name]}.pdf"
 ```
 
 The first row of the CSV file is assumed to be the
