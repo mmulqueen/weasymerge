@@ -21,3 +21,31 @@ WeasyMerge provides "safe" row data to the output filename
 template (ASCII letters, digits, space, underscore, hyphen, 
 and dot). Non-ASCII letters are converted to their closest
 ASCII equivalent.
+
+## Batch mode (multiple rows per document)
+
+Pass `--rows-per-document=N` to render N rows into a single document,
+or `--rows-per-document=all` to render every row into one document.
+Use this for label sheets, ID cards, or any layout where the
+template needs to see more than one row at a time.
+
+```bash
+weasymerge --data seeds.csv --template labels.html.j2 \
+  --output "labels-{batch.from_row_number}-{batch.to_row_number}.pdf" \
+  --rows-per-document=all
+```
+
+In batch mode the template receives a `batch` object instead of
+`row` and `row_number`:
+
+- `batch.rows` — list of row dicts in this batch
+- `batch.numbered_rows` — list of `(row_number, row)` pairs
+- `batch.from_row_number`, `batch.to_row_number` — 1-indexed inclusive range
+- `batch.total_rows` — total rows in the source data
+
+The same fields are available in the `--output` template (e.g.
+`{batch.from_row_number}`, `{batch.rows[0][Plant]}`). Page breaks
+within a single document are the template's responsibility — use
+CSS `page-break-after: always` or `break-after: page`.
+
+See `examples/labels/` for a 70×37mm, 24-per-A4 label sheet.

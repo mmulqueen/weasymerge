@@ -1,6 +1,5 @@
-from collections.abc import Iterator
 from pathlib import Path
-from typing import Any
+from typing import NamedTuple
 
 import pytest
 from conftest import run_weasymerge
@@ -8,25 +7,35 @@ from conftest import run_weasymerge
 EXAMPLES_DIR = Path(__file__).parent.parent / "examples"
 
 
-def _discover_csv_examples() -> Iterator[Any]:
-    if not EXAMPLES_DIR.is_dir():
-        return
-    for example in sorted(EXAMPLES_DIR.iterdir()):
-        if not example.is_dir():
-            continue
-        csvs = list(example.glob("*.csv"))
-        templates = list(example.glob("*.j2"))
-        if len(csvs) == 1 and len(templates) == 1:
-            yield pytest.param(example, csvs[0], templates[0], id=example.name)
+class Example(NamedTuple):
+    name: str  # directory under examples/
+    args: list[str]  # weasymerge args; --output is appended by the test
+    output: str  # --output pattern, rendered into tmp_path
 
 
-@pytest.mark.parametrize(("example", "csv", "template"), list(_discover_csv_examples()))
-def test_example_runs_end_to_end(
-    example: Path, csv: Path, template: Path, tmp_path: Path
-) -> None:
-    out_pattern = str(tmp_path / "{row_number}.pdf")
+EXAMPLES = [
+    Example(
+        "invites",
+        ["--data", "guests.csv", "--template", "invite.html.j2"],
+        "{row_number}.pdf",
+    ),
+    Example(
+        "labels",
+        [
+            "--data", "seeds.csv",
+            "--template", "labels.html.j2",
+            "--rows-per-document=all",
+        ],
+        "labels-{batch.from_row_number}-{batch.to_row_number}.pdf",
+    ),
+]
+
+
+@pytest.mark.parametrize("example", EXAMPLES, ids=lambda e: e.name)
+def test_example_runs_end_to_end(example: Example, tmp_path: Path) -> None:
     result = run_weasymerge(
-        ["--data", str(csv), "--template", str(template), "--output", out_pattern]
+        [*example.args, "--output", str(tmp_path / example.output)],
+        cwd=EXAMPLES_DIR / example.name,
     )
     assert result.returncode == 0, result.stderr
 

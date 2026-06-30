@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Seed labels</title>
+<style>
+  @page { size: A4; margin: 0; }
+  body { margin: 0; font-family: sans-serif; font-size: 10pt; }
+  .sheet {
+    display: grid;
+    grid-template-columns: repeat(3, 70mm);
+    grid-template-rows: repeat(8, 37mm);
+    page-break-after: always;
+  }
+  .sheet:last-child { page-break-after: auto; }
+  .label {
+    width: 70mm;
+    height: 37mm;
+    padding: 5mm;
+    box-sizing: border-box;
+    overflow: hidden;
+    line-height: 1.3;
+  }
+  .label .name { font-weight: bold; }
+  .label .latin { font-style: italic; color: #555; }
+</style>
+</head>
+<body>
+{% for page in batch.rows | batch(24) %}
+<div class="sheet">
+  {% for row in page %}
+  <div class="label">
+    <div class="name">{{ row.Plant }} &lsquo;{{ row.Variety }}&rsquo;</div>
+    <div class="latin">{{ row.Latin }}</div>
+    <div>Sow by: {{ row.SowBy }}</div>
+    <div>Spacing: {{ row.Spacing }}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+</body>
+</html>

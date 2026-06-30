@@ -1,4 +1,4 @@
-/examples/invites/pdfs/
+/examples/*/pdfs/
 .venv/
 __pycache__/
 *.egg-info/
