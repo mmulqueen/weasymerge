@@ -10,6 +10,8 @@ from typing import TextIO
 from jinja2 import Environment, FileSystemLoader, Template
 from weasyprint import HTML
 
+from weasymerge.barcodes import BARCODE_FILTERS
+
 
 @dataclass(frozen=True)
 class Batch:
@@ -31,6 +33,7 @@ def load_data(data_file: TextIO) -> DictReader[str]:
 def load_template(template_path: str) -> Template:
     dir_path = os.path.dirname(template_path)
     env = Environment(loader=FileSystemLoader(dir_path), autoescape=True)
+    env.filters.update(BARCODE_FILTERS)
     return env.get_template(os.path.basename(template_path))
 
 
@@ -136,7 +139,3 @@ def main() -> None:
             )
             html = merge_batch(template, batch)
             generate_pdf(html, build_batch_filename(args.output, batch))
-
-
-if __name__ == "__main__":
-    main()

@@ -4,7 +4,8 @@ requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.15'",
     "python_full_version >= '3.13' and python_full_version < '3.15'",
-    "python_full_version < '3.13'",
+    "python_full_version >= '3.11' and python_full_version < '3.13'",
+    "python_full_version < '3.11'",
 ]
 
 [[package]]
@@ -237,7 +238,7 @@ name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/50/79/66800aadf48771f6b62f7eb014e352e5d06856655206165d775e675a02c9/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219", size = 30371, upload-time = "2025-11-21T23:01:54.787Z" }
 wheels = [
@@ -741,6 +742,19 @@ wheels = [
 ]
 
 [[package]]
+name = "pystrich"
+version = "0.15"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pillow" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/54/04/3b0ffbd798347e3d3ad378534f9574a6d01d2a8ade326900629a6454d8fd/pystrich-0.15.tar.gz", hash = "sha256:6934fdb8093a2788b148e51f9a43c815a7cedb532728987555d1d181e170b35d", size = 871545, upload-time = "2026-06-26T14:32:03.521Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/d3/ead3916ed06f845b88ea57124aab42aaae7d131cef5a21fc8bc37e47c062/pystrich-0.15-py3-none-any.whl", hash = "sha256:38121667c6ac4da350a4c5b18f613d4f0ccf12382ab1fbb9d5c192fb7e22e92f", size = 948159, upload-time = "2026-06-26T14:32:01.733Z" },
+]
+
+[[package]]
 name = "pytest"
 version = "9.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -879,10 +893,16 @@ dependencies = [
     { name = "weasyprint" },
 ]
 
+[package.optional-dependencies]
+barcodes = [
+    { name = "pystrich" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
     { name = "pypdf" },
+    { name = "pystrich" },
     { name = "pytest" },
     { name = "ruff" },
 ]
@@ -890,13 +910,16 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "jinja2" },
+    { name = "pystrich", marker = "extra == 'barcodes'", specifier = ">=0.15" },
     { name = "weasyprint" },
 ]
+provides-extras = ["barcodes"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.11" },
     { name = "pypdf", specifier = ">=4" },
+    { name = "pystrich", specifier = ">=0.15" },
     { name = "pytest", specifier = ">=8" },
     { name = "ruff", specifier = ">=0.7" },
 ]

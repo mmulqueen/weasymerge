@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>Ticket {{ row['TicketID'] }}</title>
+        <style>
+            @page {
+                size: 148mm 105mm; /* A6 landscape */
+                margin: 0;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            .ticket {
+                width: 148mm;
+                height: 105mm;
+                display: flex;
+                border: 1px solid black;
+            }
+
+            .details {
+                flex: 1;
+                padding: 8mm;
+            }
+
+            .event {
+                font-size: 20pt;
+                font-weight: bold;
+                margin: 0 0 4mm;
+            }
+
+            .field {
+                font-size: 13pt;
+                line-height: 180%;
+            }
+
+            .field .label {
+                color: #555;
+                display: inline-block;
+                width: 22mm;
+            }
+
+            .codes {
+                width: 42mm;
+                padding: 8mm 6mm;
+                border-left: 1px dashed #999;
+                text-align: center;
+            }
+
+            .codes img.qr {
+                width: 30mm;
+                height: 30mm;
+            }
+
+            .codes img.barcode {
+                width: 30mm;
+                height: 12mm;
+                margin-top: 6mm;
+            }
+
+            .ticket-id {
+                font-size: 9pt;
+                margin-top: 2mm;
+                letter-spacing: 1px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ticket">
+            <div class="details">
+                <p class="event">{{ row['Event'] }}</p>
+                <p class="field"><span class="label">Attendee</span>{{ row['Name'] }}</p>
+                <p class="field"><span class="label">Date</span>{{ row['Date'] }}</p>
+                <p class="field"><span class="label">Seat</span>{{ row['Seat'] }}</p>
+            </div>
+            <div class="codes">
+                <img class="qr" src="{{ row['TicketID'] | qrcode_svg_dataurl }}" alt="Ticket QR code">
+                <img class="barcode" src="{{ row['TicketID'] | code128_svg_dataurl }}" alt="Ticket barcode">
+                <div class="ticket-id">{{ row['TicketID'] }}</div>
+            </div>
+        </div>
+    </body>
+</html>

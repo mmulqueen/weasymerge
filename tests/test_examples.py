@@ -28,6 +28,11 @@ EXAMPLES = [
         ],
         "labels-{batch.from_row_number}-{batch.to_row_number}.pdf",
     ),
+    Example(
+        "tickets",
+        ["--data", "attendees.csv", "--template", "ticket.html.j2"],
+        "ticket-{row[TicketID]}.pdf",
+    ),
 ]
 
 

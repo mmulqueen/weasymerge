@@ -49,3 +49,33 @@ within a single document are the template's responsibility — use
 CSS `page-break-after: always` or `break-after: page`.
 
 See `examples/labels/` for a 70×37mm, 24-per-A4 label sheet.
+
+## Barcodes and QR codes
+
+Install the optional `barcodes` extra to enable barcode and QR code
+Jinja2 filters, powered by [pyStrich](https://www.method-b.uk/pyStrich/):
+
+```bash
+pip install weasymerge[barcodes]
+```
+
+Each filter turns a value into a `data:` URL you can drop straight into an
+`<img>` tag in your template:
+
+```html
+<img src="{{ row['TicketID'] | qrcode_svg_dataurl }}" alt="Ticket QR code">
+```
+
+The available filters are:
+
+- `qrcode_svg_dataurl`
+- `datamatrix_svg_dataurl`
+- `aztec_svg_dataurl`
+- `pdf417_svg_dataurl`
+- `code128_svg_dataurl`
+- `ean13_svg_dataurl`
+- `code39_svg_dataurl`
+
+See `examples/tickets/` for A6 event tickets with a QR code and a Code128
+barcode.
+
