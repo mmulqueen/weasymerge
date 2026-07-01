@@ -7,10 +7,44 @@ with some HTML/CSS and providing a CSV file of data to merge.
 WeasyMerge can generate individual PDFs or batch rows together 
 into one or more PDFs. 
 
+## Installation
+
+WeasyMerge is a command-line tool, so the easiest way to install it is with
+[pipx](https://pipx.pypa.io/) or [uv](https://docs.astral.sh/uv/):
+
+```bash
+pipx install weasymerge
+```
+
+```bash
+uv tool install weasymerge
+```
+
+You can also install it into an existing environment with pip:
+
+```bash
+pip install weasymerge
+```
+
+WeasyMerge relies on WeasyPrint, which needs some system libraries — see its
+[installation guide](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html).
+On Windows this is much smoother under [WSL](https://learn.microsoft.com/windows/wsl/).
+
 ## Usage
 
 ```bash
 weasymerge --data guests.csv --template invite.html.j2 --output "pdfs/Invite {row_number} {row[Name]}.pdf"
+```
+
+`pipx run` and `uvx` run WeasyMerge on demand, fetching it if it isn't already
+available, so you can invoke it without installing it first:
+
+```bash
+pipx run weasymerge --data guests.csv --template invite.html.j2 --output "pdfs/Invite {row_number} {row[Name]}.pdf"
+```
+
+```bash
+uvx weasymerge --data guests.csv --template invite.html.j2 --output "pdfs/Invite {row_number} {row[Name]}.pdf"
 ```
 
 The first row of the CSV file is assumed to be the
@@ -56,12 +90,8 @@ See `examples/labels/` for a 70×37mm, 24-per-A4 label sheet.
 
 ## Barcodes and QR codes
 
-Install the optional `barcodes` extra to enable barcode and QR code
-Jinja2 filters, powered by [pyStrich](https://www.method-b.uk/pyStrich/):
-
-```bash
-pip install weasymerge[barcodes]
-```
+WeasyMerge comes with barcode and QR code Jinja2 filters, powered by
+[pyStrich](https://www.method-b.uk/pyStrich/).
 
 Each filter turns a value into a `data:` URL you can drop straight into an
 `<img>` tag in your template:

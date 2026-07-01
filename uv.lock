@@ -890,19 +890,14 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "jinja2" },
-    { name = "weasyprint" },
-]
-
-[package.optional-dependencies]
-barcodes = [
     { name = "pystrich" },
+    { name = "weasyprint" },
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
     { name = "pypdf" },
-    { name = "pystrich" },
     { name = "pytest" },
     { name = "ruff" },
 ]
@@ -910,16 +905,14 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "jinja2" },
-    { name = "pystrich", marker = "extra == 'barcodes'", specifier = ">=0.15" },
+    { name = "pystrich", specifier = ">=0.15" },
     { name = "weasyprint" },
 ]
-provides-extras = ["barcodes"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.11" },
     { name = "pypdf", specifier = ">=4" },
-    { name = "pystrich", specifier = ">=0.15" },
     { name = "pytest", specifier = ">=8" },
     { name = "ruff", specifier = ">=0.7" },
 ]

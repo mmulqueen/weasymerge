@@ -22,8 +22,10 @@ EXAMPLES = [
     Example(
         "labels",
         [
-            "--data", "seeds.csv",
-            "--template", "labels.html.j2",
+            "--data",
+            "seeds.csv",
+            "--template",
+            "labels.html.j2",
             "--rows-per-document=all",
         ],
         "labels-{batch.from_row_number}-{batch.to_row_number}.pdf",

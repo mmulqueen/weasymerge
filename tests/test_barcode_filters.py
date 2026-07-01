@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from weasymerge import load_template
-from weasymerge.barcodes import BARCODE_FILTERS, pystrich_required
+from weasymerge.barcodes import BARCODE_FILTERS
 
 # Symbology -> a value it can encode.
 SAMPLE_VALUES = {
@@ -37,12 +37,3 @@ def test_filter_usable_in_img_src(filter_name: str, tmp_path: Path) -> None:
     # The filter returns a plain string, but the data URL is fully
     # percent-encoded, so autoescaping passes it through unchanged.
     assert '<img src="data:image/svg+xml,' in rendered
-
-
-def test_pystrich_required_translates_missing_dependency() -> None:
-    @pystrich_required
-    def needs_pystrich(value: object) -> str:
-        raise ModuleNotFoundError("No module named 'pystrich'")
-
-    with pytest.raises(RuntimeError, match=r"weasymerge\[barcodes\]"):
-        needs_pystrich("anything")
